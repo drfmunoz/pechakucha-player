@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Slides Play 20 Plugin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            min-width: 200px;
+            padding: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Play 20 Plugin</h3>
+    <button id="toggleButton">Autoplay</button>
+    <script>
+        let autoplayEnabled = true;
+
+        document.getElementById('toggleButton').addEventListener('click', () => {
+            autoplayEnabled = !autoplayEnabled;
+            if (autoplayEnabled) {
+                document.getElementById('toggleButton').innerText = 'Disable Autoplay';
+                chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                    chrome.scripting.executeScript({
+                        target: { tabId: tabs[0].id },
+                        function: start20SecondPlay
+                    });
+                });
+            } else {
+                document.getElementById('toggleButton').innerText = 'Enable Autoplay';
+                chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+                    chrome.scripting.executeScript({
+                        target: { tabId: tabs[0].id },
+                        function: stop20SecondPlay
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
